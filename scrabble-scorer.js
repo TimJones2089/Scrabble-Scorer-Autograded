@@ -25,50 +25,54 @@ let vowelPointStructure = {
 
 // Scoring functions
 
-function oldScrabbleScorer(word) {
-	word = word.toUpperCase();
-	let letterPoints = "";
- 
+function scrabbleScorer(word) {
+	word = word.toLowerCase();
+	let letterPoints = 0;
 	for (let i = 0; i < word.length; i++) {
  
-	  for (const pointValue in oldPointStructure) {
+	  for (let key in newPointStructure) {
  
-		 if (oldPointStructure[pointValue].includes(word[i])) {
-			letterPoints += `Points for '${word[i]}': ${pointValue}\n`
-		 }
- 
-	  }
-	}
-	return letterPoints;
- }
-
- function simpleScrabbleScorer(word) {
-   word = word.toUpperCase();
-	let letterPoints = "";
- 
-	for (let i = 0; i < word.length; i++) {
- 
-	  for (const pointValue in simplePointStructue) {
- 
-		 if (simplePointStructue[pointValue].includes(word[i])) {
-			letterPoints += `Points for '${word[i]}': ${pointValue}\n`
+		 if (key.includes(word[i])) {
+			
+         letterPoints += newPointStructure[key]
+    
 		 }
  
 	  }
 	}
 	return letterPoints;
 }
+ 
 
-function vowelBonusScrabbleScorer(word) {
+ function simpleScorer(word) {
    word = word.toUpperCase();
-	let letterPoints = "";
+	let letterPoints = 0;
+   
+ 
+	for (let i = 0; i < word.length; i++) {
+ 
+	  for (const pointValue in simplePointStructue) {
+ 
+		 if (simplePointStructue[pointValue].includes(word[i])) {
+			letterPoints += Number(pointValue)
+		 }
+ 
+	  }
+	}
+	return letterPoints; 
+   
+}
+
+function vowelBonusScorer(word) {
+   word = word.toUpperCase();
+	let letterPoints = 0;
  
 	for (let i = 0; i < word.length; i++) {
  
 	  for (const pointValue in vowelPointStructure) {
  
 		 if (vowelPointStructure[pointValue].includes(word[i])) {
-			letterPoints += `Points for '${word[i]}': ${pointValue}\n`
+			letterPoints += Number(pointValue)
 		 }
  
 	  }
@@ -87,57 +91,90 @@ function initialPrompt() {
 
 // Scoring Objects
 
-let simpleScorer = {
-   name:'Simple Score', 
-   descripton: 'Each letter is worth 1 point.', 
-   scoringFunction: simpleScrabbleScorer()
-};
 
-let vowelBonusScorer = {
-   name: 'Bonus Vowels', 
-   descripton: 'Vowels are 3 pts, consonants are 1 pt.', 
-   scoringFunction: vowelBonusScrabbleScorer()
-};
+const scoringAlgorithms = [
+  {
+   "name":'Simple Score', 
+   "descripton": 'Each letter is worth 1 point.', 
+   "scoringFunction": simpleScorer
+},
+{
+   "name": 'Bonus Vowels', 
+  " descripton": 'Vowels are 3 pts, consonants are 1 pt.', 
+   "scoringFunction": vowelBonusScorer
+},
+{
+   "name": 'Scrabble', 
+   "descripton": 'The traditional scoring algorithm.', 
+   "scoringFunction": scrabbleScorer
+}
+];
 
-let scrabbleScorer = {
-   name: 'Scrabble', 
-   descripton: 'The traditional scoring algorithm.', 
-   scoringFunction: oldScrabbleScorer()
-};
-
-// Pushing scoring objects into the scoring Algorithm array
-
-const scoringAlgorithms = [];
-scoringAlgorithms.push(simpleScorer, vowelBonusScorer, scrabbleScorer);
 
 // Scorer promt function
 
 function scorerPrompt() {
-scorerSelction = input.question(`Which scoring method would you like to use? 
-Enter 0 for Simple Scorer
-Enter 1 for Bonus Vowel Scorer
-Enter 2 for Traditional Scrabble Scorer
+   let userSelection;
+let scorerSelction = input.question(`Which scoring method would you like to use? 
+Enter 0 for Simple: One point per character
+Enter 1 for Vowel Bonus: Vowels are worth 3 points
+Enter 2 for Scrabble: Uses scrabble point system
 : `);
-let userSelection;
-
-   if (scorerSelction === '0'){
-      userSelection = simpleScrabbleScorer(userInput);
+    if (scorerSelction === '0'){
+      userSelection = simpleScorer(userInput);
+      console.log(`The score for '${userInput}' is ${userSelection}`);
    } else if (scorerSelction === '1') {
-      userSelection = vowelBonusScrabbleScorer(userInput);
+      userSelection = vowelBonusScorer(userInput);
+      console.log(`The score for '${userInput}' is ${userSelection}`);
    } else if (scorerSelction === '2') {
-      userSelection = oldScrabbleScorer(userInput);
+      userSelection = scrabbleScorer(userInput);
+      console.log(`The score for '${userInput}' is ${userSelection}`);
    } else {
       console.log('Sorry try again.');
-   } return userSelection;
-
+   } 
+   return userSelection;
+   
 }
 
 
 
 
-function transform() {};
+function transform(oldPointStructure) {
+   let lowerCaseKeys = {};
+   for (const key in oldPointStructure){
+     lowerCaseKeys['a'] = Number(Object.keys(oldPointStructure)[0]);
+     lowerCaseKeys['b'] = Number(Object.keys(oldPointStructure)[2]);
+     lowerCaseKeys['c'] = Number(Object.keys(oldPointStructure)[2]);
+     lowerCaseKeys['d'] = Number(Object.keys(oldPointStructure)[1]);
+     lowerCaseKeys['e'] = Number(Object.keys(oldPointStructure)[0]);
+     lowerCaseKeys['f'] = Number(Object.keys(oldPointStructure)[3]);
+     lowerCaseKeys['g'] = Number(Object.keys(oldPointStructure)[1]);
+     lowerCaseKeys['h'] = Number(Object.keys(oldPointStructure)[3]);
+     lowerCaseKeys['i'] = Number(Object.keys(oldPointStructure)[0]);
+     lowerCaseKeys['j'] = Number(Object.keys(oldPointStructure)[5]);
+     lowerCaseKeys['k'] = Number(Object.keys(oldPointStructure)[4]);
+     lowerCaseKeys['l'] = Number(Object.keys(oldPointStructure)[0]);
+     lowerCaseKeys['m'] = Number(Object.keys(oldPointStructure)[2]);
+     lowerCaseKeys['n'] = Number(Object.keys(oldPointStructure)[0]);
+     lowerCaseKeys['o'] = Number(Object.keys(oldPointStructure)[0]);
+     lowerCaseKeys['p'] = Number(Object.keys(oldPointStructure)[2]);
+     lowerCaseKeys['q'] = Number(Object.keys(oldPointStructure)[6]);
+     lowerCaseKeys['r'] = Number(Object.keys(oldPointStructure)[0]);
+     lowerCaseKeys['s'] = Number(Object.keys(oldPointStructure)[0]);
+     lowerCaseKeys['t'] = Number(Object.keys(oldPointStructure)[0]);
+     lowerCaseKeys['u'] = Number(Object.keys(oldPointStructure)[0]);
+     lowerCaseKeys['v'] = Number(Object.keys(oldPointStructure)[3]);
+     lowerCaseKeys['w'] = Number(Object.keys(oldPointStructure)[3]);
+     lowerCaseKeys['x'] = Number(Object.keys(oldPointStructure)[5]);
+     lowerCaseKeys['y'] = Number(Object.keys(oldPointStructure)[3]);
+     lowerCaseKeys['z'] = Number(Object.keys(oldPointStructure)[6]);
+     
+   } return lowerCaseKeys;
+};
 
-let newPointStructure;
+let newPointStructure = transform(oldPointStructure);
+   
+
 
 function runProgram() {
    initialPrompt();
