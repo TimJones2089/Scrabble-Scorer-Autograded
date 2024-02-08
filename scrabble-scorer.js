@@ -93,20 +93,20 @@ function initialPrompt() {
 
 
 const scoringAlgorithms = [
-  {
+{
    "name":'Simple Score', 
    "descripton": 'Each letter is worth 1 point.', 
-   "scoringFunction": simpleScorer
+   "scorerFunction": simpleScorer
 },
 {
    "name": 'Bonus Vowels', 
   " descripton": 'Vowels are 3 pts, consonants are 1 pt.', 
-   "scoringFunction": vowelBonusScorer
+   "scorerFunction": vowelBonusScorer
 },
 {
    "name": 'Scrabble', 
    "descripton": 'The traditional scoring algorithm.', 
-   "scoringFunction": scrabbleScorer
+   "scorerFunction": scrabbleScorer
 }
 ];
 
